@@ -185,9 +185,10 @@ class CTable : protected std::vector<std::vector<CString>> {
     /** Get a line of the table's output
      *  @param uIdx The index of the line you want.
      *  @param sLine This string will receive the output.
+     *  @param as_deflist (optional) Opt into ChanServ style output (two-columns only)
      *  @return True unless uIdx is past the end of the table.
      */
-    bool GetLine(unsigned int uIdx, CString& sLine) const;
+    bool GetLine(unsigned int uIdx, CString& sLine, bool as_deflist = false) const;
 
     /** Return the width of the given column.
      *  Please note that adding and filling new rows might change the
