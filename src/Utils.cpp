@@ -805,11 +805,26 @@ bool CTable::SetCell(const CString& sColumn, const CString& sValue,
     return true;
 }
 
-bool CTable::GetLine(unsigned int uIdx, CString& sLine) const {
+bool CTable::GetLine(unsigned int uIdx, CString& sLine, bool as_deflist) const {
     std::stringstream ssRet;
 
     if (empty()) {
         return false;
+    }
+
+    if (as_deflist) {
+        if (m_vsHeaders.size() > 2) return false; // definition list mode can only do up to two columns
+        if (uIdx >= size()) return false;
+
+        const std::vector<CString>& mRow = (*this)[uIdx];
+        ssRet << "\x02" << mRow[0] << "\x0f"; //bold first column
+        if (m_vsHeaders.size() >= 2) {
+            ssRet << ": " << mRow[1];
+        }
+
+        sLine = ssRet.str();
+        return true;
+
     }
 
     if (uIdx == 1) {
